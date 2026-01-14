@@ -1,6 +1,11 @@
 const API = "https://pokeapi.co/api/v2"; //initialises api
 const typeContainer = document.getElementById("type-container"); //selects the type-container id
 const cardContainer = document.getElementById("pokemon-container"); //selects the container
+
+let currentOffset = 0; // tracks how many pokemon has already been loaded to the screen
+const batchSize = 50; // the limit to how many pokmeon to fetch at one time set to 50
+let isLoading = false; //defualt set to false to prevent multiple fetches is the user scrolls to fast
+
 async function getTypes() {
   //try catch block used to handle errors without stoping the program works with the catch block to outline the errors
   try {
@@ -38,8 +43,19 @@ function createPokemonCard(pokemon) {
 
   const img = document.createElement("img");
   img.className = "pokemon-image";
-  img.src = pokemon.sprites.other["official-artwork"].front_default;
+  const normal = pokemon.sprites.other["official-artwork"].front_default;
+  const shiny = pokemon.sprites.other["official-artwork"].front_shiny;
+
+  img.src = normal;
   img.alt = pokemon.name;
+
+  img.addEventListener("mouseenter", () => {
+    img.src = shiny; // switch to shiny
+  });
+
+  img.addEventListener("mouseleave", () => {
+    img.src = normal; // switch back to normal
+  });
 
   card.appendChild(img);
 
@@ -72,16 +88,22 @@ function createPokemonCard(pokemon) {
 
 async function getPokemon() {
   try {
+    if (isLoading) return; // prevent double fetch
+    isLoading = true;
     //fetch limit of 20
-    const response = await fetch(`${API}/pokemon?limit=20`);
+    const response = await fetch(
+      `${API}/pokemon?limit=${batchSize}&offset=${currentOffset}`
+    );
     const data = await response.json();
+
+    currentOffset += batchSize; // updates the current batch size
 
     //a promise so requests are parrallel waits for all of them to finish then apppends
     const pokemonPromises = data.results.map((pokemon) =>
       fetch(pokemon.url).then((res) => res.json())
     );
 
-    const allPokemonData = await Promise.all(pokemonPromises);
+    const allPokemonData = await Promise.all(pokemonPromises); //waits till all promises are resolved (parrallel fetching)
 
     //ensures data is in order
     allPokemonData.sort((a, b) => a.id - b.id);
@@ -89,6 +111,17 @@ async function getPokemon() {
     allPokemonData.forEach((pokemon) => {
       const card = createPokemonCard(pokemon);
       cardContainer.appendChild(card);
+    });
+    isLoading = false;
+
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY; //checks how far the page has scrolled
+      const windowHeight = window.innerHeight; //checks for height of visible window
+      const documentHeight = document.body.scrollHeight; //total height of the page
+
+      if (scrollTop + windowHeight >= documentHeight - 100) {
+        getPokemon(); // load next batch
+      }
     });
   } catch (error) {
     console.error(error);
