@@ -183,3 +183,7 @@
 html {
   font-size: var(--font-size);
 }
+
+body {
+  background: var(--background);
+}

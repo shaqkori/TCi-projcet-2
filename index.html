@@ -7,5 +7,120 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="./styles/styles.css" />
   </head>
-  <body></body>
+  <body>
+    <header class="text-center mb-12">
+      <h1 id="title" class="text-5xl font-bold text-gray-800 mb-4">Pokédex</h1>
+      <h2 id="subtitle" class="text-xl text-gray-600">
+        Explore all 1025 Pokémon from Generations 1-9
+      </h2>
+    </header>
+
+    <main>
+      <div id="search" class="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <!-- Search Bar -->
+        <div class="flex gap-4 mb-6">
+          <div class="relative flex-1">
+            <!-- Search Icon -->
+            <svg
+              class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z"
+              />
+            </svg>
+
+            <form>
+              <input
+                type="text"
+                placeholder="Search Pokémon by name..."
+                class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none text-lg"
+              />
+            </form>
+          </div>
+
+          <!-- Favorites Button -->
+          <button
+            id="favourite"
+            class="flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all whitespace-nowrap bg-gray-100 text-gray-700 hover:bg-gray-200"
+          >
+            <!-- Heart Icon -->
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21.682l-7.682-7.682a4.5 4.5 0 010-6.364z"
+              />
+            </svg>
+            Favorites
+          </button>
+        </div>
+
+        <!-- Type Filters -->
+        <div id="filter">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-gray-700">Filter by Type</h3>
+            <button
+              class="flex items-center gap-1 text-sm text-indigo-600 hover:text-indigo-800 font-semibold"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+              Clear Filters
+            </button>
+          </div>
+
+          <div id="type-container" class="flex flex-wrap gap-2">
+            <!-- Example types -->
+            <button
+              class="px-4 py-2 rounded-full font-semibold text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
+            >
+              Fire
+            </button>
+            <button
+              class="px-4 py-2 rounded-full font-semibold text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
+            >
+              Water
+            </button>
+            <button
+              class="px-4 py-2 rounded-full font-semibold text-sm bg-gray-100 text-gray-700 hover:bg-gray-200"
+            >
+              Grass
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pokémon Grid -->
+      <div
+        id="pokemon-container"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+      >
+
+        </div>
+        
+      </div>
+    </main>
+  </body>
 </html>
