@@ -262,3 +262,99 @@ body {
     opacity: 1;
   }
 }
+
+/* Override skeleton styles for real content */
+.pokemon-image.real {
+  background-color: var(--muted);
+  object-fit: contain;
+}
+
+.pokemon-id.real,
+.pokemon-name.real {
+  background-color: transparent;
+  height: auto;
+}
+
+/* Type colors */
+.pokemon-type {
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.pokemon-type.grass {
+  background-color: #78c850;
+}
+
+.pokemon-type.poison {
+  background-color: #a040a0;
+}
+
+.type-button {
+  padding: 4px 12px;
+  margin: 4px;
+  border-radius: 999px;
+  border: none;
+  background-color: var(--secondary);
+  cursor: pointer;
+}
+
+.type-button:hover {
+  color: white;
+}
+#normal:hover {
+  background-color: #a8a77a;
+}
+#fire:hover {
+  background-color: #ee8130;
+}
+#water:hover {
+  background-color: #6390f0;
+}
+#electric:hover {
+  background-color: #f7d02c;
+}
+#grass:hover {
+  background-color: #78c850;
+}
+#ice:hover {
+  background-color: #96d9d6;
+}
+#fighting:hover {
+  background-color: #c22e28;
+}
+#poison:hover {
+  background-color: #a040a0;
+}
+#ground:hover {
+  background-color: #e2bf65;
+}
+#flying:hover {
+  background-color: #a98ff3;
+}
+#psychic:hover {
+  background-color: #f95587;
+}
+#bug:hover {
+  background-color: #a6b91a;
+}
+#rock:hover {
+  background-color: #b6a136;
+}
+#ghost:hover {
+  background-color: #735797;
+}
+#dragon:hover {
+  background-color: #6f35fc;
+}
+#dark:hover {
+  background-color: #705746;
+}
+#steel:hover {
+  background-color: #b7b7ce;
+}
+#fairy:hover {
+  background-color: #d685ad;
+}
