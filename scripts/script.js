@@ -38,18 +38,19 @@ async function getTypes() {
 
 //handles creation of the pokemon card
 function createPokemonCard(pokemon) {
-  const card = document.createElement("div");
+  const card = document.createElement("div"); //creates div element then matches it to class name
   card.className = "pokemon-card";
 
   const img = document.createElement("img");
   img.className = "pokemon-image";
-  const normal = pokemon.sprites.other["official-artwork"].front_default;
+  const normal = pokemon.sprites.other["official-artwork"].front_default; //sprites
   const shiny = pokemon.sprites.other["official-artwork"].front_shiny;
 
   img.src = normal;
   img.alt = pokemon.name;
 
   img.addEventListener("mouseenter", () => {
+    //hover events to change sprite
     img.src = shiny; // switch to shiny
   });
 
@@ -57,11 +58,11 @@ function createPokemonCard(pokemon) {
     img.src = normal; // switch back to normal
   });
 
-  card.appendChild(img);
+  card.appendChild(img); //adds element to card
 
   const Pid = document.createElement("p");
   Pid.className = "pokemon-id";
-  Pid.textContent = `#${pokemon.id.toString().padStart(3, "0")}`;
+  Pid.textContent = `#${pokemon.id.toString().padStart(3, "0")}`; //number in #0000 format
   card.appendChild(Pid);
 
   const name = document.createElement("p");
@@ -72,9 +73,10 @@ function createPokemonCard(pokemon) {
   const typesContainer = document.createElement("div");
   typesContainer.className = "pokemon-types";
   pokemon.types.forEach((t) => {
+    // loops through and appends each type to the type container, used cause in some cases there is more than one type.
     const typeEl = document.createElement("span");
     typeEl.className = "pokemon-type";
-    typeEl.id = `pokemon-type-${t.type.name}`; // <- note the .type
+    typeEl.id = `pokemon-type-${t.type.name}`;
     typeEl.textContent = t.type.name;
     typesContainer.appendChild(typeEl);
   });
@@ -127,6 +129,6 @@ async function getPokemon() {
     console.error(error);
   }
 }
-
+//calls functions
 getTypes();
 getPokemon();
