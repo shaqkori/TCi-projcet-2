@@ -6,6 +6,10 @@ let currentOffset = 0; // tracks how many pokemon has already been loaded to the
 const batchSize = 50; // the limit to how many pokmeon to fetch at one time set to 50
 let isLoading = false; //defualt set to false to prevent multiple fetches is the user scrolls to fast
 
+let favourite = []; //initialises favourite array
+
+let selected = []; //initialiss selected array
+
 async function getTypes() {
   //try catch block used to handle errors without stoping the program works with the catch block to outline the errors
   try {
@@ -23,12 +27,43 @@ async function getTypes() {
 
       const button = document.createElement("button"); //creates button element
 
+      const input = document.createElement("input");
+      const label = document.createElement("label");
+
+      // creates check boxes instead of buttons
+
+      input.setAttribute("type", "checkbox");
+      input.name = "type";
+      input.id = `${type}`;
+      input.classList = "types";
+
+      label.htmlFor = `${type}`;
+      label.classList = "type-button";
+      label.id = `${type}`;
+      label.textContent = type;
+
       button.textContent = type; // gives button the content of the type
 
       button.id = `${type}`; //the button id is set to type
       button.classList = "type-button"; // button class name is type-button
 
-      typeContainer.appendChild(button); //adds button element to the type container
+      //typeContainer.appendChild(button); //adds button element to the type container
+
+      //
+
+      typeContainer.appendChild(input);
+      typeContainer.appendChild(label);
+
+      //checks for button clicked
+      input.addEventListener("change", (event) => {
+        if (event.target.checked) {
+          console.log(event.target.checked);
+          label.classList.add(`pokemon-type-${data.name}`);
+        } else {
+          console.log(event.target.checked);
+          label.classList.remove(`pokemon-type-${data.name}`);
+        }
+      });
     }
   } catch (error) {
     //error handeling
