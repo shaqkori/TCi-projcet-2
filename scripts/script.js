@@ -56,12 +56,19 @@ async function getTypes() {
 
       //checks for button clicked
       input.addEventListener("change", (event) => {
+        //checks if the check box is clickd
         if (event.target.checked) {
-          console.log(event.target.checked);
-          label.classList.add(`pokemon-type-${data.name}`);
+          console.log(event.target.checked); //returns the state of the chck box so true ore falls
+          label.classList.add(`pokemon-type-${data.name}`); //changes the backgroundou of the button if it is true
+
+          selected.push(data.name); //adds the type to the array
+
+          console.log(selected);
         } else {
-          console.log(event.target.checked);
+          console.log(event.target.checked); // if false it removes the class
           label.classList.remove(`pokemon-type-${data.name}`);
+          selected = selected.filter((t) => t !== type);
+          console.log(selected);
         }
       });
     }
