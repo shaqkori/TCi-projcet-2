@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="./styles/styles.css" />
   </head>
   <body class="transition-colors duration-300">
-    <header class="text-center mb-12">
+
+    <section id="pokemonMain">
+      <header class="text-center mb-12">
       <h1 id="title" class="text-5xl font-bold mb-4">Pokédex</h1>
       <h2 id="subtitle" class="text-xl">
         Explore all 1025 Pokémon from Generations 1-9
@@ -84,6 +86,7 @@
             </h3>
             <button
               class="flex items-center gap-1 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200 font-semibold"
+              id="clear"
             >
               <svg
                 class="w-4 h-4"
@@ -116,6 +119,126 @@
         id="pokemon-container"
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
       ></div>
+
+
+    </section>
+    
+      <section id="pokemonDetail">
+        <div class="container mx-auto px-4 py-8 max-w-6xl" >
+          <!-- Back and Favorite -->
+          <div class="flex items-center justify-between mb-6">
+            <button id="backButton" class="type-button">Back to Pokédex</button>
+            <button id="favButton" class="type-button">Add to Favorites</button>
+          </div>
+
+          <!-- Pokémon Card -->
+          <div class="pokemon-card">
+            <!-- Header -->
+            <div class="header mb-6">
+              <div>
+                <p id="pokemonId" class="pokemon-id">#001</p>
+                <h1 id="pokemonName" class="pokemon-name">Bulbasaur</h1>
+                <p id="pokemonGenus" class="pokemon-genus">Seed Pokémon</p>
+              </div>
+              <button id="toggleShiny" class="type-button">
+                Normal / Shiny
+              </button>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="grid md:grid-cols-2 gap-8">
+              <!-- Left Column -->
+              <div class="left-column">
+                <!-- Image -->
+                <div class="pokemon-image real mb-6">
+                  <img
+                    id="pokemonImage"
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
+                    alt="Bulbasaur"
+                  />
+                </div>
+
+                <!-- Types -->
+                <div class="types-container mb-6">
+                  <h3>Type</h3>
+                  <div id="pokemonTypes" class="pokemon-types">
+                    <span class="pokemon-type grass">Grass</span>
+                    <span class="pokemon-type poison">Poison</span>
+                  </div>
+                </div>
+
+                <!-- Height / Weight -->
+                <div class="physical grid grid-cols-2 gap-4">
+                  <div class="bg-blue-50 rounded-lg p-4">
+                    <p>Height</p>
+                    <p id="pokemonHeight">0.7 m</p>
+                  </div>
+                  <div class="bg-blue-50 rounded-lg p-4">
+                    <p>Weight</p>
+                    <p id="pokemonWeight">6.9 kg</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column -->
+              <div class="right-column">
+                <!-- Description -->
+                <div class="description mb-8">
+                  <h3>Pokédex Entry</h3>
+                  <p id="pokemonDescription">
+                    A strange seed was planted on its back at birth. The plant
+                    sprouts and grows with this Pokémon.
+                  </p>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats">
+                  <h3>Base Stats</h3>
+                  <div id="statsContainer" class="space-y-4">
+                    <div class="stat">
+                      <div class="flex justify-between mb-1">
+                        <span>HP</span>
+                        <span>45</span>
+                      </div>
+                      <div
+                        class="w-full bg-gray-200 rounded-full h-3 overflow-hidden"
+                      >
+                        <div
+                          class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-indigo-500 to-purple-600"
+                          style="width: 18%"
+                        ></div>
+                      </div>
+                    </div>
+                    <div class="stat">
+                      <div class="flex justify-between mb-1">
+                        <span>Attack</span>
+                        <span>49</span>
+                      </div>
+                      <div
+                        class="w-full bg-gray-200 rounded-full h-3 overflow-hidden"
+                      >
+                        <div
+                          class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-indigo-500 to-purple-600"
+                          style="width: 19%"
+                        ></div>
+                      </div>
+                    </div>
+                    <!-- Repeat for all stats -->
+                  </div>
+
+                  <!-- Total Stats -->
+                  <div
+                    class="mt-6 pt-6 border-t border-gray-200 flex justify-between items-center"
+                  >
+                    <span>Total</span>
+                    <span id="totalStats">318</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <script>

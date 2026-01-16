@@ -195,7 +195,7 @@ body {
 .pokemon-card {
   background-color: var(--card);
   color: var(--card-foreground);
-  border: 2px solid var(--primary);
+  border: 2px solid var(--border);
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
@@ -204,7 +204,7 @@ body {
 }
 
 .pokemon-card:hover {
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px var(--ring);
 }
 
 /* Skeleton animation */
@@ -216,7 +216,7 @@ body {
 .pokemon-image {
   width: 100%;
   aspect-ratio: 1 / 1;
-  background-color: #e5e7eb;
+  background-color: var(--secondary);
   border-radius: 12px;
   margin-bottom: 16px;
 }
@@ -524,4 +524,8 @@ body {
 
 .pokemon-type-fairy {
   background-color: #d685ad;
+}
+
+#pokemonDetail {
+  display: none;
 }

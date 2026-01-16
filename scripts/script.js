@@ -9,6 +9,9 @@ let isLoading = false;
 let selected = []; // selected types
 let allPokemon = []; // master Pokémon list
 let favourites = [];
+
+let selectedPokemon = [];
+
 //handles rendering the pokemon to the page
 function renderPokemon() {
   cardContainer.innerHTML = ""; //sets the default of the dom to be empty
@@ -77,6 +80,16 @@ async function getTypes() {
   }
 }
 
+//clears the array of any types
+function clearTypes() {
+  const clearBtn = document.getElementById("clear");
+
+  clearBtn.addEventListener("click", () => {
+    selected = []; //sets array = empty
+    renderPokemon();
+  });
+}
+
 //handles getting the pokemon data
 
 async function getPokemon() {
@@ -120,6 +133,7 @@ window.addEventListener("scroll", () => {
 function createPokemonCard(pokemon) {
   const card = document.createElement("div");
   card.className = "pokemon-card";
+  card.dataset.id = `${pokemon.id}`;
 
   const img = document.createElement("img");
   img.className = "pokemon-image";
@@ -148,6 +162,7 @@ function createPokemonCard(pokemon) {
   const typesContainer = document.createElement("div");
   typesContainer.className = "pokemon-types";
 
+  //loops through each type the pokeon has and appends it to the type container
   pokemon.types.forEach((t) => {
     const span = document.createElement("span");
     span.className = "pokemon-type";
@@ -157,8 +172,103 @@ function createPokemonCard(pokemon) {
   });
 
   card.appendChild(typesContainer);
+  console.log(card.id);
   return card;
+}
+
+function showPokemon() {
+  document.getElementById("pokemonMain").style.display = "none";
+  document.getElementById("pokemonDetail").style.display = "block";
+}
+
+function showPokedex() {
+  document.getElementById("pokemonMain").style.display = "block";
+  document.getElementById("pokemonDetail").style.display = "none";
+}
+
+//handles getting the pokemon details when clicked
+function getPokemonDetails(id) {
+  //find function returns the first pokemon that matches the id
+  return allPokemon.find((pokemon) => pokemon.id == id);
+}
+
+cardContainer.addEventListener("click", (e) => {
+  //listens for the click on teh card
+  const card = e.target.closest(".pokemon-card");
+  if (!card) return;
+  const id = card.dataset.id;
+  const pokemon = getPokemonDetails(id);
+
+  if (pokemon) {
+    showPokemonDetail(pokemon);
+    showPokemon();
+  }
+});
+
+//handles displaying the detail on the page
+function showPokemonDetail(pokemon) {
+  document.getElementById("pokemonId").innerText = `#${pokemon.id
+    .toString()
+    .padStart(3, "0")}`;
+  document.getElementById("pokemonName").innerText = pokemon.name;
+  document.getElementById("pokemonGenus").innerText = pokemon.genus || ""; // from species API
+
+  // Image
+  document.getElementById("pokemonImage").src =
+    pokemon.sprites.other["official-artwork"].front_default ||
+    pokemon.sprites.front_default;
+  document.getElementById("pokemonImage").alt = pokemon.name;
+
+  // Types
+  const typesContainer = document.getElementById("pokemonTypes");
+  typesContainer.innerHTML = ""; // clear old types
+  pokemon.types.forEach(({ type }) => {
+    const span = document.createElement("span");
+    span.className = `pokemon-type ${type.name}`;
+    span.innerText = type.name;
+    span.style.backgroundColor = type.name; // optional function for consistent type colors
+    typesContainer.appendChild(span);
+  });
+
+  // Physical info
+  document.getElementById("pokemonHeight").innerText = `${
+    pokemon.height / 10
+  } m`; // height in meters
+  document.getElementById("pokemonWeight").innerText = `${
+    pokemon.weight / 10
+  } kg`; // weight in kg
+
+  // Description / Pokédex entry
+  document.getElementById("pokemonDescription").innerText =
+    pokemon.description || "No description available";
+
+  // Base Stats
+  const statsContainer = document.getElementById("statsContainer");
+  statsContainer.innerHTML = ""; // clear old stats
+  let total = 0;
+  pokemon.stats.forEach((stat) => {
+    total += stat.base_stat;
+    const statDiv = document.createElement("div");
+    statDiv.className = "stat";
+
+    statDiv.innerHTML = `
+      <div class="flex justify-between mb-1">
+        <span>${stat.stat.name}</span>
+        <span>${stat.base_stat}</span>
+      </div>
+      <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+        <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-indigo-500 to-purple-600" style="width: ${
+          stat.base_stat / 2
+        }%"></div>
+      </div>
+    `;
+
+    statsContainer.appendChild(statDiv);
+  });
+
+  document.getElementById("totalStats").innerText = total;
 }
 
 getTypes();
 getPokemon();
+clearTypes();
