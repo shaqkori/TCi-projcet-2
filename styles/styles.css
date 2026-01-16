@@ -530,4 +530,6 @@ body {
   display: none;
 }
 
-#
+.bio {
+  color: var(--secondary);
+}
