@@ -13,6 +13,12 @@ let favourites = [];
 
 let selectedPokemon = [];
 
+//applies dark mode class  when clicked
+const toggleBtn = document.getElementById("darkModeToggle");
+toggleBtn.addEventListener("click", () => {
+  document.documentElement.classList.toggle("dark");
+});
+
 //handles rendering the pokemon to the page
 function renderPokemon() {
   cardContainer.innerHTML = ""; //sets the default of the dom to be empty
