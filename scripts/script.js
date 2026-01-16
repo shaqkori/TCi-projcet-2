@@ -8,7 +8,7 @@ let isLoading = false;
 
 let selected = []; // selected types
 let allPokemon = []; // master Pokémon list
-
+let favourites = [];
 //handles rendering the pokemon to the page
 function renderPokemon() {
   cardContainer.innerHTML = ""; //sets the default of the dom to be empty

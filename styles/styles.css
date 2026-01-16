@@ -186,18 +186,21 @@ html {
 
 body {
   background: var(--background);
+  color: var(--primary);
 }
 
 /* card styling */
 
 /* Card container */
 .pokemon-card {
-  background-color: #ffffff;
+  background-color: var(--card);
+  color: var(--card-foreground);
+  border: 2px solid var(--primary);
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   cursor: pointer;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
 .pokemon-card:hover {
@@ -274,7 +277,7 @@ body {
   margin: 4px;
   border-radius: 999px;
   border: none;
-  background-color: var(--secondary);
+  background-color: var(--primary);
   cursor: pointer;
 }
 
@@ -317,6 +320,7 @@ body {
   border: none;
   background-color: var(--secondary);
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .type-button:hover {
