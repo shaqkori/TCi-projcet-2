@@ -1,111 +1,144 @@
-const API = "https://pokeapi.co/api/v2"; //initialises api
-const typeContainer = document.getElementById("type-container"); //selects the type-container id
-const cardContainer = document.getElementById("pokemon-container"); //selects the container
+const API = "https://pokeapi.co/api/v2";
+const typeContainer = document.getElementById("type-container");
+const cardContainer = document.getElementById("pokemon-container");
 
-let currentOffset = 0; // tracks how many pokemon has already been loaded to the screen
-const batchSize = 50; // the limit to how many pokmeon to fetch at one time set to 50
-let isLoading = false; //defualt set to false to prevent multiple fetches is the user scrolls to fast
+let currentOffset = 0;
+const batchSize = 20;
+let isLoading = false;
 
-let favourite = []; //initialises favourite array
+let selected = []; // selected types
+let allPokemon = []; // master Pokémon list
 
-let selected = []; //initialiss selected array
+//handles rendering the pokemon to the page
+function renderPokemon() {
+  cardContainer.innerHTML = ""; //sets the default of the dom to be empty
 
+  let pokemonToRender = allPokemon; // holds all the pokemon we want to display to the screen
+
+  // apply AND filter only if types selected
+  if (selected.length > 0) {
+    pokemonToRender = allPokemon.filter(
+      (
+        pokemon //filtering logic - loops over all pokemon and keeps the one where the condition is true so the type of pokemon
+      ) =>
+        selected.every(
+          (
+            selectedType //.every all selected types are present in the pokemon so for dual types
+          ) => pokemon.types.some((t) => t.type.name === selectedType) //.some  check if it has either typeing and adds it to the array
+        ) //these functions work together to filter out the correct pokemon
+    );
+  }
+  //loops through and adds card to the dom
+  pokemonToRender.forEach((pokemon) => {
+    const card = createPokemonCard(pokemon);
+    cardContainer.appendChild(card);
+  });
+}
+
+//gets the types and handles adding them to screen
 async function getTypes() {
-  //try catch block used to handle errors without stoping the program works with the catch block to outline the errors
   try {
-    //loops through the relevant types - doesn't use forEach as theres types returned that we dont want
-    for (let typeID = 1; typeID < 19; typeID++) {
-      const response = await fetch(`${API}/type/${typeID}`); // returns the id as the response
-
-      if (!response.ok) {
-        throw new Error("Could not fetch resource"); //error handeling
-      }
-
+    for (let typeID = 1; typeID <= 18; typeID++) {
+      const response = await fetch(`${API}/type/${typeID}`);
       const data = await response.json();
-      const type = data.name; // filters out the name from the object
-      console.log(data.name);
+      const typeName = data.name;
 
-      const button = document.createElement("button"); //creates button element
+      //creats the types as checkboxes
 
       const input = document.createElement("input");
       const label = document.createElement("label");
 
-      // creates check boxes instead of buttons
+      input.type = "checkbox";
+      input.id = typeName;
+      input.className = "types";
 
-      input.setAttribute("type", "checkbox");
-      input.name = "type";
-      input.id = `${type}`;
-      input.classList = "types";
-
-      label.htmlFor = `${type}`;
-      label.classList = "type-button";
-      label.id = `${type}`;
-      label.textContent = type;
-
-      button.textContent = type; // gives button the content of the type
-
-      button.id = `${type}`; //the button id is set to type
-      button.classList = "type-button"; // button class name is type-button
-
-      //typeContainer.appendChild(button); //adds button element to the type container
-
-      //
+      label.htmlFor = typeName;
+      label.className = "type-button";
+      label.textContent = typeName;
 
       typeContainer.appendChild(input);
       typeContainer.appendChild(label);
 
-      //checks for button clicked
-      input.addEventListener("change", (event) => {
-        //checks if the check box is clickd
-        if (event.target.checked) {
-          console.log(event.target.checked); //returns the state of the chck box so true ore falls
-          label.classList.add(`pokemon-type-${data.name}`); //changes the backgroundou of the button if it is true
-
-          selected.push(data.name); //adds the type to the array
-
-          console.log(selected);
+      //handles the logic for checking whats selected  adds to the array of types
+      input.addEventListener("change", () => {
+        if (input.checked) {
+          selected.push(typeName);
+          label.classList.add(`pokemon-type-${typeName}`); //hover class to change to shiny sprite
         } else {
-          console.log(event.target.checked); // if false it removes the class
-          label.classList.remove(`pokemon-type-${data.name}`);
-          selected = selected.filter((t) => t !== type);
-          console.log(selected);
+          selected = selected.filter((t) => t !== typeName); // filters the type from the array
+          label.classList.remove(`pokemon-type-${typeName}`); //removes hover class
         }
+
+        renderPokemon(); //renders pokemon
       });
     }
-  } catch (error) {
-    //error handeling
-    console.error(error);
+  } catch (err) {
+    console.error(err);
   }
 }
 
-//handles creation of the pokemon card
+//handles getting the pokemon data
+
+async function getPokemon() {
+  if (isLoading) return;
+  isLoading = true;
+
+  try {
+    const response = await fetch(
+      `${API}/pokemon?limit=${batchSize}&offset=${currentOffset}` //limits to how much to load at a time and tracks how many is loaded to the page
+    );
+    const data = await response.json(); //response
+    currentOffset += batchSize; // keeps track of the data loaded
+
+    const pokemonData = await Promise.all(
+      data.results.map((p) => fetch(p.url).then((res) => res.json())) //promise function loads all data in parrallel the then renders after
+    );
+
+    allPokemon.push(...pokemonData); // adds the data to the pokemon array
+    allPokemon.sort((a, b) => a.id - b.id); //ensures pokemon are rendered in sequential order
+
+    renderPokemon(); //respects filters
+  } catch (err) {
+    console.error(err);
+  }
+
+  isLoading = false;
+}
+
+window.addEventListener("scroll", () => {
+  //handles loading more pokemon
+  const scrollTop = window.scrollY;
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.body.scrollHeight;
+
+  if (scrollTop + windowHeight >= documentHeight - 100) {
+    getPokemon();
+  }
+});
+
+//creates the actual card
 function createPokemonCard(pokemon) {
-  const card = document.createElement("div"); //creates div element then matches it to class name
+  const card = document.createElement("div");
   card.className = "pokemon-card";
 
   const img = document.createElement("img");
   img.className = "pokemon-image";
-  const normal = pokemon.sprites.other["official-artwork"].front_default; //sprites
+
+  const normal = pokemon.sprites.other["official-artwork"].front_default;
   const shiny = pokemon.sprites.other["official-artwork"].front_shiny;
 
   img.src = normal;
   img.alt = pokemon.name;
 
-  img.addEventListener("mouseenter", () => {
-    //hover events to change sprite
-    img.src = shiny; // switch to shiny
-  });
+  img.addEventListener("mouseenter", () => (img.src = shiny)); //when mouse over the pokemon image then you can see it shiny
+  img.addEventListener("mouseleave", () => (img.src = normal));
 
-  img.addEventListener("mouseleave", () => {
-    img.src = normal; // switch back to normal
-  });
+  card.appendChild(img);
 
-  card.appendChild(img); //adds element to card
-
-  const Pid = document.createElement("p");
-  Pid.className = "pokemon-id";
-  Pid.textContent = `#${pokemon.id.toString().padStart(3, "0")}`; //number in #0000 format
-  card.appendChild(Pid);
+  const id = document.createElement("p");
+  id.className = "pokemon-id";
+  id.textContent = `#${pokemon.id.toString().padStart(3, "0")}`;
+  card.appendChild(id);
 
   const name = document.createElement("p");
   name.className = "pokemon-name";
@@ -114,63 +147,18 @@ function createPokemonCard(pokemon) {
 
   const typesContainer = document.createElement("div");
   typesContainer.className = "pokemon-types";
+
   pokemon.types.forEach((t) => {
-    // loops through and appends each type to the type container, used cause in some cases there is more than one type.
-    const typeEl = document.createElement("span");
-    typeEl.className = "pokemon-type";
-    typeEl.id = `pokemon-type-${t.type.name}`;
-    typeEl.textContent = t.type.name;
-    typesContainer.appendChild(typeEl);
+    const span = document.createElement("span");
+    span.className = "pokemon-type";
+    span.id = `pokemon-type-${t.type.name}`;
+    span.textContent = t.type.name;
+    typesContainer.appendChild(span);
   });
 
   card.appendChild(typesContainer);
-
   return card;
 }
 
-//handles loading of the pokmeon card element
-
-async function getPokemon() {
-  try {
-    if (isLoading) return; // prevent double fetch
-    isLoading = true;
-    //fetch limit of 20
-    const response = await fetch(
-      `${API}/pokemon?limit=${batchSize}&offset=${currentOffset}`
-    );
-    const data = await response.json();
-
-    currentOffset += batchSize; // updates the current batch size
-
-    //a promise so requests are parrallel waits for all of them to finish then apppends
-    const pokemonPromises = data.results.map((pokemon) =>
-      fetch(pokemon.url).then((res) => res.json())
-    );
-
-    const allPokemonData = await Promise.all(pokemonPromises); //waits till all promises are resolved (parrallel fetching)
-
-    //ensures data is in order
-    allPokemonData.sort((a, b) => a.id - b.id);
-
-    allPokemonData.forEach((pokemon) => {
-      const card = createPokemonCard(pokemon);
-      cardContainer.appendChild(card);
-    });
-    isLoading = false;
-
-    window.addEventListener("scroll", () => {
-      const scrollTop = window.scrollY; //checks how far the page has scrolled
-      const windowHeight = window.innerHeight; //checks for height of visible window
-      const documentHeight = document.body.scrollHeight; //total height of the page
-
-      if (scrollTop + windowHeight >= documentHeight - 100) {
-        getPokemon(); // load next batch
-      }
-    });
-  } catch (error) {
-    console.error(error);
-  }
-}
-//calls functions
 getTypes();
 getPokemon();
