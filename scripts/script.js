@@ -1,6 +1,7 @@
 const API = "https://pokeapi.co/api/v2";
 const typeContainer = document.getElementById("type-container");
 const cardContainer = document.getElementById("pokemon-container");
+const backBtn = document.getElementById("backButton");
 
 let currentOffset = 0;
 const batchSize = 20;
@@ -268,6 +269,11 @@ function showPokemonDetail(pokemon) {
 
   document.getElementById("totalStats").innerText = total;
 }
+
+//resets the page
+backBtn.addEventListener("click", () => {
+  showPokedex();
+});
 
 getTypes();
 getPokemon();
