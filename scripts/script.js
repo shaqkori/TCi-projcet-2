@@ -41,10 +41,10 @@ function renderPokemon() {
     );
   }
 
-  if (search !== "") {
+  if (searchTerm !== "") {
     //search bar filters through list of pokemon if not empty to find matching value
     pokemonToRender = pokemonToRender.filter(
-      (pokemon) => pokemon.name.toLowerCase().includes(searchQuery) //checks if value is in the pokemon name
+      (pokemon) => pokemon.name.toLowerCase().startsWith(searchTerm) //checks if value is in the pokemon name
     );
   }
   //loops through and adds card to the dom
@@ -285,10 +285,12 @@ function showPokemonDetail(pokemon) {
   document.getElementById("totalStats").innerText = total;
 }
 
-const search = document.getElementById("searchBar");
+const searchQuery = document.getElementById("searchBar"); //gets search bar element
 
-search.addEventListener("input", (e) => {
-  searchQuery = e.target.value.toLowerCase();
+searchQuery.addEventListener("input", (e) => {
+  //listsend for the value in the searchbar
+  searchTerm = e.target.value.trim().toLowerCase(); //trims the value so it doesnt read non characters
+
   renderPokemon();
 });
 
