@@ -11,7 +11,9 @@ let selected = []; // selected types
 let allPokemon = []; // master Pokémon list
 let favourites = [];
 
-let selectedPokemon = [];
+let selectedPokemon = []; //selectd pokemon
+
+let searchTerm = ""; //empty value for seach bar initialy
 
 //applies dark mode class  when clicked
 const toggleBtn = document.getElementById("darkModeToggle");
@@ -36,6 +38,13 @@ function renderPokemon() {
             selectedType //.every all selected types are present in the pokemon so for dual types
           ) => pokemon.types.some((t) => t.type.name === selectedType) //.some  check if it has either typeing and adds it to the array
         ) //these functions work together to filter out the correct pokemon
+    );
+  }
+
+  if (search !== "") {
+    //search bar filters through list of pokemon if not empty to find matching value
+    pokemonToRender = pokemonToRender.filter(
+      (pokemon) => pokemon.name.toLowerCase().includes(searchQuery) //checks if value is in the pokemon name
     );
   }
   //loops through and adds card to the dom
@@ -247,7 +256,7 @@ function showPokemonDetail(pokemon) {
 
   // Description / Pokédex entry
   document.getElementById("pokemonDescription").innerText =
-    pokemon.description || "No description available";
+    pokemon.ability || "No description available";
 
   // Base Stats
   const statsContainer = document.getElementById("statsContainer");
@@ -275,6 +284,13 @@ function showPokemonDetail(pokemon) {
 
   document.getElementById("totalStats").innerText = total;
 }
+
+const search = document.getElementById("searchBar");
+
+search.addEventListener("input", (e) => {
+  searchQuery = e.target.value.toLowerCase();
+  renderPokemon();
+});
 
 //resets the page
 backBtn.addEventListener("click", () => {

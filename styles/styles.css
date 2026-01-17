@@ -531,5 +531,5 @@ body {
 }
 
 .bio {
-  color: var(--secondary);
+  color: var(--foreground);
 }
