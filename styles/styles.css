@@ -531,9 +531,5 @@ body {
 }
 
 .bio {
-  color: var(--foreground);
-}
-
-#bio-card {
   background: var(--secondary);
 }
