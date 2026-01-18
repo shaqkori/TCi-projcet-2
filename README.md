@@ -55,9 +55,9 @@ The core funcitonality of the application allows users to browse through dynamic
 
 ## Development
 
-So the initial idea came from the ![Pokdex Website](https://pokemondb.net/pokedex/shiny).
+So the initial idea came from the [Pokdex Website](https://pokemondb.net/pokedex/shiny).
 
-Using the ![PokeAPI]("https://pokeapi.co/"). This is possible on the front end as it is open source and don't have to deal with the protection of private API keys.
+Using the [PokeAPI]("https://pokeapi.co/"). This is possible on the front end as it is open source and don't have to deal with the protection of private API keys.
 
 The website functions as such where on load the inital 20 pokemon are loaded because of pagination, meaning we split up the api calls into chunks so that we dont overload the frontend with over 1000 api calls at onece. on the call it extracts the image pokemon number and loops through and displays the types which is all added to the pokemon card and then displayed to the screen through the render function. There is an event listener that listens for a scroll on the page which alerts to load more pokemon wich is tracked by a current offset function.
 
