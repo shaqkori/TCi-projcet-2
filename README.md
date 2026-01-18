@@ -94,6 +94,8 @@ See [Here](./validation.md) for Performance testing and validation results
 ![MobileScreenShots](./screenshots/mobileDetial-pokemon.png)
 ![MobileScreenShots](./screenshots/mobilemain-top.png)
 ![MobileScreenShots](./screenshots/mobileDetial-pokemon.png)
+![MobileScreenShots](./screenshots/pokemonDetail-mobile.png)
+![MobileScreenShots](./screenshots/pokemonDetail-mobile-2.png)
 
 ### Screen Shots - Desktop
 
