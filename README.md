@@ -81,6 +81,12 @@ Also a big issue is i was rebuliding the DOM every time a change was made as my 
 
 Initially, Pokémon were rendered out of numerical order. This occurred because Pokémon data was fetched using multiple network requests, and network requests are asynchronous and do not resolve in a guaranteed order. As a result, some Pokémon with higher IDs were rendered before lower ones. By waiting for all fetch promises to resolve (e.g., using Promise.all) before rendering, the application avoids race conditions caused by non-deterministic network timing.
 
+### Future improvements
+
+Whilst the undertaking of this project was intense there is still a large room for improvement going forward. First of all i want to find a way around the limitation without overloading the user, as an "issue" you can notice is that you cannot get results if u search for a pokemon that has not yet been loaded which the user may mistake for a broken application. Also i wanted to add a favourites feature where the user can filter by there favourite pokemon which works teh same way the type filteriing and search bar works.
+
+seperately one big issue the overall design of the appliation is very bland as i have not had much time to focus on the look of the application i would definately like to work towords improving the ux and ui so it feels more friendly.
+
 ## Responsivity
 
 The website uses the Tailwind library to ensure responsiveness with the grid property displaying 4 columns on larger screens and decreases as the screen gets smaller
@@ -93,7 +99,6 @@ See [Here](./validation.md) for Performance testing and validation results
 
 ![MobileScreenShots](./screenshots/mobileDetial-pokemon.png)
 ![MobileScreenShots](./screenshots/mobilemain-top.png)
-![MobileScreenShots](./screenshots/mobileDetial-pokemon.png)
 ![MobileScreenShots](./screenshots/pokemonDetail-mobile.png)
 ![MobileScreenShots](./screenshots/pokemonDetail-mobile-2.png)
 
